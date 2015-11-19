@@ -1,0 +1,2 @@
+# SpigotNotifier
+Google Chrome Extension
