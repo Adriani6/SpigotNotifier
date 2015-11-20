@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
 
-  "name": "Spigot Notification",
+  "name": "Spigot Notifier",
   "description": "Get notifications in chrome.",
   "version": "1.0",
 
@@ -13,6 +13,9 @@
 	"js": ["jquery.js"],
 	"matches": ["http://*/*", "https://*/*"]
 	}],
+	"background": {
+    "page": "popup.html"
+  },
   "permissions": [
    "activeTab"
    ]
