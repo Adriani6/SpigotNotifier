@@ -3,7 +3,7 @@
 
   "name": "Spigot Notifier",
   "description": "Get notifications in chrome.",
-  "version": "1.0",
+  "version": "1.1",
 
   "browser_action": {
    "default_icon": "spigot.png",
@@ -17,6 +17,8 @@
     "page": "popup.html"
   },
   "permissions": [
-   "activeTab"
+   "activeTab",
+   "notifications",
+   "tabs"
    ]
 }
