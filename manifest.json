@@ -1,24 +1,35 @@
 {
-  "manifest_version": 2,
-
-  "name": "Spigot Notifier",
-  "description": "Get notifications in chrome.",
-  "version": "1.1",
-
-  "browser_action": {
-   "default_icon": "spigot.png",
-   "default_popup": "popup.html"
-  },
-  "content_scripts": [{
-	"js": ["jquery.js"],
-	"matches": ["http://*/*", "https://*/*"]
-	}],
-	"background": {
-    "page": "popup.html"
-  },
-  "permissions": [
-   "activeTab",
-   "notifications",
-   "tabs"
-   ]
+    "manifest_version":2,
+    "name":"Spigot Notifier",
+    "description":"Get notifications in chrome.",
+    "version":"1.2",
+    "icons":{
+        "16":"icon16.png",
+        "32":"icon32.png",
+        "48":"icon48.png",
+        "128":"icon128.png"
+    },
+    "browser_action":{
+        "default_icon":"spigot256.png",
+        "default_popup":"popup.html"
+    },
+    "content_scripts":[
+        {
+            "js":[
+                "jquery.js"
+            ],
+            "matches":[
+                "http://*/*",
+                "https://*/*"
+            ]
+        }
+    ],
+    "background":{
+        "page":"popup.html"
+    },
+    "permissions":[
+        "activeTab",
+        "notifications",
+        "tabs"
+    ]
 }
