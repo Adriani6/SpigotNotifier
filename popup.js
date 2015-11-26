@@ -11,13 +11,13 @@ function checkNotifications() {
             oldData[0] = notifications;
             oldData[1] = messages;
 
-            notifications = $("#result").text().replace(/\.\.\./g, "");
-            messages = $("#messages").text().replace(/\.\.\./g, "");
+            notifications = parseInt($("#result").text().replace(/\.\.\./g, ""));
+            messages = parseInt($("#messages").text().replace(/\.\.\./g, ""));
 
-            var total = parseInt(notifications) + parseInt(messages);
+            var total = notifications + messages;
 
             chrome.browserAction.setBadgeText({
-                text: total.toString()
+                text: (total == 0) ? "" : total.toString()
             });
         });
     });
@@ -29,22 +29,24 @@ $(document).ready(function() {
         checkNotifications();
         var notification;
         if (notifications > oldData[0]) {
-            notification = new Notification('New Notification(s)', {
+            notification_alert = new Notification('New Notification(s)', {
                 icon: 'spigot256.png',
                 body: "You've got " + notifications + " new notifications.",
             });
+            notification_alert.onclick = function() {
+                window.open("https://www.spigotmc.org/account/alerts");
+            };
         }
 
         if (messages > oldData[1]) {
-            notification = new Notification('New Message(s)', {
+            notification_message = new Notification('New Message(s)', {
                 icon: 'spigot256.png',
                 body: "You've got " + messages + " unread messages.",
             });
+            notification_message.onclick = function() {
+                window.open("https://www.spigotmc.org/conversations/");
+            };
         }
-
-        notification.onclick = function() {
-            window.open("http://www.spigotmc.org");
-        };
 
     }, 15000);
 
