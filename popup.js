@@ -11,10 +11,10 @@ function checkNotifications() {
             oldData[0] = notifications;
             oldData[1] = messages;
 
-            notifications = $("#result").text().replace(/\.\.\./g, "");
-            messages = $("#messages").text().replace(/\.\.\./g, "");
+            notifications = parseInt($("#result").text().replace(/\.\.\./g, ""));
+            messages = parseInt($("#messages").text().replace(/\.\.\./g, ""));
 
-            var total = parseInt(notifications) + parseInt(messages);
+            var total = notifications + messages;
 
             chrome.browserAction.setBadgeText({
                 text: total.toString()
