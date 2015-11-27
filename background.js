@@ -9,6 +9,7 @@ function checkEverything() {
     $.ajax({
         url: 'https://www.spigotmc.org',
         success: function(data) {
+            data = data.replace(/\"\/\//g, "\"https://");
             checkNotifications(data);
             checkProfileStats(data);
         }
@@ -18,7 +19,7 @@ function checkEverything() {
 function makeNotification(title, message) {
     chrome.notifications.create({
         type: "basic",
-        iconUrl: "spigot256.png",
+        iconUrl: "icon512.png",
         title: title,
         message: message
     }, function(notificationid) {
@@ -93,5 +94,5 @@ function checkProfileStats(data) {
 }
 
 setInterval(checkEverything, 15 * 1000);
-setTimeout(checkEverything, 1); // Don't ask...
+setTimeout(checkEverything, 1000); // Don't ask...
 chrome.browserAction.setBadgeBackgroundColor({"color":"#ed8106"}) // Set to orange colour
