@@ -18,7 +18,7 @@ function checkEverything() {
 function makeNotification(title, message) {
     chrome.notifications.create({
         type: "basic",
-        iconUrl: "spigot256.png",
+        iconUrl: "icon512.png",
         title: title,
         message: message
     }, function(notificationid) {
