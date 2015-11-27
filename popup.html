@@ -3,49 +3,32 @@
 
 <head>
     <title>Spigot Notifier</title>
-    <script src="jquery.js"></script>
-    <script src="popup.js"></script>
-    <style>
-        body {
-            width: 150px;
-        }
-        
-        #result {
-            display: inline;
-        }
-        
-        #messages {
-            display: inline;
-        }
-        
-        h3 {
-            display: inline;
-        }
-        
-        a:link {
-            color: blue;
-            text-decoration: none;
-        }
-        
-        a:visited {
-            color: blue;
-            text-decoration: none;
-        }
-    </style>
+    <script src="jquery.js" type="text/javascript"></script>
+    <script src="popup.js" type="text/javascript"></script>
+    <link href='aaargh.css' rel='stylesheet' type='text/css'>
+    <link href="popup.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-    <h2>Spigot Notifier</h2>
-    <h3>Notifications:</h3>
-    <a href="https://www.spigotmc.org/account/alerts">
-        <div id="result">...</div>
-    </a>
-    <h3>Messages:</h3>
-    <a href="https://www.spigotmc.org/conversations/">
-        <div id="messages">...</div>
-    </a>
-    <br />
-    <a href="https://www.spigotmc.org">Go to Spigot!</a>
+	<div class="image">
+		<img src="sn_blank.png" usemap="#site-link"></img>
+		<map name="site-link">
+			<area shape="rect" coords="0,0,300,100" href="https://spigotmc.org">
+		</map>
+		<div class="content">
+			<span>Notifications | </span>
+			<a id="alerts" href="https://www.spigotmc.org/account/alerts">...</a>
+			</br>
+			<span>Messages | </span>
+			<a id="messages" href="https://www.spigotmc.org/conversations/">...</a>
+			</br>
+			<span>Post Count | </span>
+			<span id="posts">...</span>
+			</br>
+			<span>Ratings | </span>
+			<span id="rating">...</span>
+		</div>
+    </div>
 </body>
 
 </html>
