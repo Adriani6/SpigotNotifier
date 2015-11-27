@@ -1,0 +1,56 @@
+body {
+    width: 300px;
+    margin: 0px;
+}
+.header {
+    margin-bottom: 2px;
+}
+.center {
+    text-align: center;
+}
+.secondaryHeader {
+    font-size: 25px;
+    font-weight: bold;
+    font-family: Aaargh;
+}
+.content {
+    color: #222222;
+    line-height: 1.48;
+    position: absolute;
+    top: 120px;
+    left: 24px;
+    width: 100%;
+}
+.content span,
+a {
+    font-size: 24px;
+    font-family: Aaargh;
+}
+.content a:link {
+    text-decoration: none;
+}
+.content a:visited {
+    text-decoration: none;
+}
+#alerts,
+#messages,
+#posts,
+#rating {
+    font-weight: 100;
+}
+#alerts {
+    color: #B5B5B5;
+}
+#messages {
+    color: #D6847B;
+}
+#posts {
+    color: #B5B5B5;
+}
+#rating {
+    color: #90FF85;
+}
+.image {
+    height: 276px;
+    position: relative;
+}
