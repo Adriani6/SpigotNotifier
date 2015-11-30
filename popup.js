@@ -41,7 +41,7 @@ $(document).ready(function() {
     });
 
     $('#options').click('click', function() {
-        location.href = "chrome-extension://bjphopppikbddiifjjpjojddmgonbhgn/options/options.html";
+        location.pathname = "/options/options.html";
         return false;
     });
 

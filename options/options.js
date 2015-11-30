@@ -126,7 +126,7 @@ function playAudio(name) {
 $(document).ready(function() {
     $("body").on("click", "a", function(event) {
         if (event.target.id == "back") {
-            location.href = "chrome-extension://bjphopppikbddiifjjpjojddmgonbhgn/popup.html";
+            location.pathname = "/popup.html";
         } else {
             chrome.tabs.create({
                 url: $(this).attr('href')
