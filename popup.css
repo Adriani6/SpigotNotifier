@@ -1,9 +1,33 @@
 body {
-    width: 300px;
+    width: 375px;
     margin: 0px;
+    -webkit-user-select: none;
+}
+.background {
+    height: 276px;
+    position: relative;
 }
 .header {
-    margin-bottom: 2px;
+    font-family: Aaargh;
+    font-size: 15px;
+    color: #DFDFDF;
+    position: absolute;
+    top: 2px;
+    left: 10px;
+    width: 100%;
+}
+.header a:link {
+    color: #DFDFDF;
+}
+.header a:visited {
+    color: #DFDFDF;
+}
+#options {
+    cursor: pointer;
+    position: absolute;
+    top: 41px;
+    left: 300px;
+    width: 43px;
 }
 .center {
     text-align: center;
@@ -14,6 +38,7 @@ body {
     font-family: Aaargh;
 }
 .content {
+    font-family: Aaargh;
     color: #222222;
     line-height: 1.48;
     position: absolute;
@@ -22,12 +47,8 @@ body {
     width: 100%;
 }
 .content span,
-a {
+.content a {
     font-size: 24px;
-    font-family: Aaargh;
-}
-.content a:link {
-    text-decoration: none;
 }
 .content a:visited {
     text-decoration: none;
@@ -42,15 +63,11 @@ a {
     color: #B5B5B5;
 }
 #messages {
-    color: #D6847B;
+    color: #B5B5B5;
 }
 #posts {
     color: #B5B5B5;
 }
 #rating {
     color: #90FF85;
-}
-.image {
-    height: 276px;
-    position: relative;
 }

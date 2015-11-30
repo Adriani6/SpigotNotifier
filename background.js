@@ -4,6 +4,8 @@ var messages = 0;
 var messages_old = 0;
 var my_notids_alerts = [];
 var my_notids_messages = [];
+var volume = undefined;
+var sound = undefined;
 
 function checkEverything() {
     $.ajax({
@@ -14,6 +16,28 @@ function checkEverything() {
             checkProfileStats(data);
         }
     });
+
+    chrome.storage.sync.get("volume", function(response) {
+        if (response.hasOwnProperty("volume")) {
+            volume = response.volume;
+        } else {
+            volume = 50;
+        }
+    });
+
+    chrome.storage.sync.get("sound", function(response) {
+        if (response.hasOwnProperty("sound")) {
+            sound = response.sound;
+        } else {
+            sound = "Pluck 6.mp3"
+        }
+    });
+}
+
+function playSound(name) {
+    audobj = new Audio("sounds/" + name);
+    audobj.volume = volume / 100;
+    audobj.play();
 }
 
 function makeNotification(title, message) {
@@ -28,6 +52,7 @@ function makeNotification(title, message) {
         } else {
             my_notids_messages.push(notificationid);
         }
+        playSound(sound);
     });
 }
 
@@ -86,7 +111,7 @@ function checkNotifications(data) {
 
 function checkProfileStats(data) {
     chrome.storage.local.set({
-        'posts': $(data).find(".stats").text().split(":")[1]
+        'posts': $(data).find(".stats").text().split(":")[1].replace("\n", "")
     });
     chrome.storage.local.set({
         'rating': $(data).find(".dark_postrating_positive").text()
@@ -95,4 +120,6 @@ function checkProfileStats(data) {
 
 setInterval(checkEverything, 15 * 1000);
 setTimeout(checkEverything, 1000); // Don't ask...
-chrome.browserAction.setBadgeBackgroundColor({"color":"#ed8106"}) // Set to orange colour
+chrome.browserAction.setBadgeBackgroundColor({
+        "color": "#ed8106"
+    }) // Set badge colour to orange
