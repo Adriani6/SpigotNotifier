@@ -1,0 +1,184 @@
+body {
+    width: 375px;
+    margin: 0px;
+    -webkit-user-select: none;
+}
+@font-face {
+    font-family: BEBAS;
+    src: url(BEBAS.ttf);
+}
+.center {
+    text-align: center;
+}
+.upsidedown {
+    display: inline-block;
+    -webkit-transform: rotateX(180deg);
+    transform: rotateX(180deg);
+}
+.header {
+    font-family: Aaargh;
+    font-size: 16px;
+    color: #A3B1C0;
+    position: absolute;
+    top: 4px;
+    left: 2px;
+    width: 375px;
+}
+.header a:link {
+    color: #A3B1C0;
+}
+.header a:visited {
+    color: #A3B1C0;
+}
+.header #back {
+    z-index: 1;
+    position: absolute;
+    left: 3px;
+    color: #DFDFDF;
+    cursor: pointer;
+}
+.header #sno {
+    color: #F4B159;
+    position: absolute;
+    top: -2px;
+    width: 100%;
+}
+.icons img {
+    z-index: 1;
+    position: absolute;
+    width: 23px;
+    cursor: pointer;
+}
+.icons #vol_minus {
+    top: 52px;
+    left: 104px;
+}
+.icons #vol_plus {
+    top: 52px;
+    left: 207px;
+}
+.icons #ns_play {
+    top: 125px;
+    left: 334px;
+    width: 36px;
+}
+.icons #csm_plus {
+    top: 188px;
+    left: 306px;
+    width: 27px;
+}
+.icons #csm_minus {
+    top: 222px;
+    left: 306px;
+    width: 27px;
+}
+.icons #csm_search {
+    top: 188px;
+    left: 340px;
+    width: 27px;
+}
+.icons #csm_play {
+    top: 218px;
+    left: 335px;
+    width: 33px;
+}
+.onoff {
+    position: absolute;
+    font-family: Aaargh;
+    font-weight: bold;
+    top: 54px;
+    left: 270px;
+    cursor: pointer;
+}
+.volume {
+    position: absolute;
+    top: 26px;
+    left: 66px;
+}
+.volume span {
+    color: #3C3C3D;
+    left: 90px;
+    top: 19px;
+}
+.volume img {
+    left: 64px;
+    top: 40px;
+}
+.dropdown {
+    position: absolute;
+    top: 127px;
+    left: 150px;
+    width: 183px;
+    height: 31px;
+    padding-top: 4px;
+    border: 0px solid;
+    color: #FFFFFF;
+    -webkit-appearance: none;
+    background: url('sn_options_circumflex.png') no-repeat right;
+    background-size: contain;
+    background-color: #113952;
+    letter-spacing: 1px;
+    font-family: Aaargh;
+    font-weight: bold;
+    font-size: 18px;
+}
+.dropdown:focus {
+    outline: none;
+}
+.dropdown option {
+    font-size: 15px;
+    outline: none;
+}
+.content {
+    font-family: Aaargh;
+    font-size: 17px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+}
+.title {
+    margin: 0px;
+    position: absolute;
+    font-size: 15px;
+    width: 1px;
+}
+.title.nvolume {
+    top: 43px;
+    left: 3px;
+}
+.title.nsound {
+    top: 124px;
+    left: 32px;
+}
+.spigotnotifier {
+    margin: 0px;
+    position: absolute;
+    top: 173px;
+    left: 49px;
+    font-family: BEBAS;
+    font-size: 24px;
+    color: #FFFFFF;
+}
+.description {
+    font-family: Aaargh;
+    font-size: 20px;
+    top: 206px;
+    left: 47px;
+    width: 160px;
+    color: #222222;
+}
+.extlinks {
+    position: absolute;
+    text-decoration: none;
+    font-size: 14px;
+    top: 185px;
+    left: 253px;
+    color: #DFDFDF;
+}
+.extlinks.github {
+    top: 209px;
+}
+.extlinks.store {
+    top: 232px;
+}
