@@ -111,7 +111,7 @@ function checkNotifications(data) {
 
 function checkProfileStats(data) {
     chrome.storage.local.set({
-        'posts': $(data).find("#content").find(".stats").text().split(":")[1]
+        'posts': $(data).find("#content").find(".stats").text().split(":")[1].replace("\n", "")
     });
     chrome.storage.local.set({
         'rating': $(data).find("#content").find(".dark_postrating_positive").text()
