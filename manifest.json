@@ -15,7 +15,9 @@
     "content_scripts":[
         {
             "js":[
-                "jquery.js"
+                "jquery.js",
+				"spigotnotifier.js",
+				"notificationManager.js"
             ],
             "matches":[
                 "http://*/*",
@@ -30,6 +32,9 @@
         "activeTab",
         "notifications",
         "storage",
-        "tabs"
+        "tabs",
+        "webNavigation", 
+        "*://*/*",
+        "tabs", "http://www.spigotmc.org/*"
     ]
 }
