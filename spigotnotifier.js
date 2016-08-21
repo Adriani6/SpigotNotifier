@@ -2,7 +2,8 @@ var SpigotNotifier = {};
 
 SpigotNotifier.init = function()
 {
-    SpigotNotifier.checkData(); 
+    SpigotNotifier.checkData();
+    notificationManager.updateBadge(); 
 
     setInterval(function(){ 
         SpigotNotifier.checkData(); 
@@ -31,7 +32,7 @@ SpigotNotifier.getMessagesData = function()
 SpigotNotifier.checkData = function()
 {
     
-    var promise = SpigotNotifier.getAlertsData();
+    var promise = SpigotNotifier.getForumData();
 
     promise.success(function(data){
         var alerts, messages = undefined;
@@ -39,9 +40,13 @@ SpigotNotifier.checkData = function()
         alerts = parseInt($(data).find("#AlertsMenu_Counter").text());
         messages = parseInt($(data).find("#ConversationsMenu_Counter").text());
 
+        SpigotNotifier.updateProfileStats(data);
+
         if(alerts > 0)
         {
-                var newData = $(data).find(".alertsScroller").html();
+            var alertpromise = SpigotNotifier.getAlertsData();
+            alertpromise.success(function(alertData){
+                var newData = $(alertData).find(".alertsScroller").html();
                 var lastAlertID = SpigotNotifier.getLastAlertID();
                 var topID = 0;
 		        $(newData).find('.primaryContent').each(function(){
@@ -57,6 +62,7 @@ SpigotNotifier.checkData = function()
                             topID = id;
 		        });
                 SpigotNotifier.updateLastAlertID(topID);
+            });
 
             alertpromise.error(function(){
                 console.log("Couldn't get data");
@@ -65,7 +71,7 @@ SpigotNotifier.checkData = function()
         
         if(messages > 0)
         {
-            var messagepromise = SpigotNotifier.getMessagesData();
+            //var messagepromise = SpigotNotifier.getMessagesData();
             notificationManager.createNotification("New Message!", "You have received a new Message.");
             SpigotNotifier.setMessageCount(1);
             notificationManager.updateBadge();
@@ -75,38 +81,67 @@ SpigotNotifier.checkData = function()
 
 SpigotNotifier.setMessageCount = function(c)
 {
-    localStorage.setItem("SN-MsgCount", c);
+    var count = parseInt(SpigotNotifier.getMessagesCount()) + c;
+
+    chrome.storage.local.set({
+        'SNMsgCount': count
+    });
 }
 
 SpigotNotifier.setAlertCount = function(c)
 {
-    var count = parseInt(localStorage.getItem("SN-AlertCount"));
-    localStorage.setItem("SN-AlertCount", count + c);
+    var count = parseInt(SpigotNotifier.getAlertCount()) + c;
+
+    chrome.storage.local.set({
+        'SNAlertCount': count
+    });
 }
 
 SpigotNotifier.resetCounters = function()
 {
-    localStorage.setItem("SN-AlertCount", 0);
-    localStorage.setItem("SN-MsgCount", 0);
+    chrome.storage.local.set({
+        'SNAlertCount': 0
+    });
+
+    chrome.storage.local.set({
+        'SNMsgCount': 0
+    });
+
     notificationManager.updateBadge();
 }
 
 SpigotNotifier.getAlertCount = function()
 {
-    return localStorage.getItem("SN-AlertCount");
+    chrome.storage.local.get('SNAlertCount', function(response) { 
+        console.log(response.SNAlertCount);
+        return response.SNAlertCount;    
+    }); 
 }
 
 SpigotNotifier.getMessagesCount = function()
 {
-    return localStorage.getItem("SN-MsgCount");
+    chrome.storage.local.get('SNMsgCount', function(response) { 
+        console.log(response.SNMsgCount);
+        return response.SNMsgCount;    
+    });
 }
 
 SpigotNotifier.updateLastAlertID = function(id)
 {
-    localStorage.setItem("SN-LastAlertID", id);
+    localStorage.setItem("SNLastAlertID", id);
 }
 
 SpigotNotifier.getLastAlertID = function()
 {
-    return localStorage.getItem("SN-LastAlertID");
+    return localStorage.getItem("SNLastAlertID");
+}
+
+SpigotNotifier.updateProfileStats = function(data)
+{
+    chrome.storage.local.set({
+        'posts': $(data).find("#content").find(".stats").text().split(":")[1].replace("\nRatings","").replace("\n","")
+    });
+    chrome.storage.local.set({
+        'rating': $(data).find("#content").find(".dark_postrating_positive").text()
+    });
 }

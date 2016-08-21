@@ -1,6 +1,7 @@
 $(document).ready(function()
 {
 	SpigotNotifier.init();
+    
 
 chrome.webNavigation.onCompleted.addListener(function(details) {
         var alertc = parseInt(SpigotNotifier.getAlertCount());
