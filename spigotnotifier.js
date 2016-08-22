@@ -7,7 +7,24 @@ SpigotNotifier.init = function()
 
     setInterval(function(){ 
         SpigotNotifier.checkData(); 
-    }, 120000);    
+    }, 120000);
+    
+    chrome.storage.sync.get("volume", function(response) {
+        if (response.hasOwnProperty("volume")) {
+            volume = response.volume;
+        } else {
+            volume = 50;
+        }
+    });
+
+    chrome.storage.sync.get("sound", function(response) {
+        if (response.hasOwnProperty("sound")) {
+            sound = response.sound;
+        } else {
+            sound = "Pluck 6.mp3"
+        }
+    }); 
+
 }
 
 SpigotNotifier.getForumData = function()
@@ -50,18 +67,15 @@ SpigotNotifier.checkData = function()
                 var lastAlertID = SpigotNotifier.getLastAlertID();
                 var topID = 0;
 		        $(newData).find('.primaryContent').each(function(){
+                    if($(this).find(".newItem").length > 0){
                         var subject = $(this).find("h3").text();
-                        var id = $(this).attr('id').replace("alert", "");
-                        if(lastAlertID < id){
-                            notificationManager.createNotification("New Alert!", subject);
-                            SpigotNotifier.setAlertCount(1); 
-                            notificationManager.updateBadge();
-                        }
 
-                        if(topID < id)
-                            topID = id;
+                        notificationManager.createNotification("New Alert!", subject);
+                        SpigotNotifier.setAlertCount(1); 
+                        notificationManager.updateBadge();
+                    }
 		        });
-                SpigotNotifier.updateLastAlertID(topID);
+                //SpigotNotifier.updateLastAlertID(topID);
             });
 
             alertpromise.error(function(){

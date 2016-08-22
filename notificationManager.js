@@ -1,6 +1,7 @@
 var notificationManager = {};
 var my_notids_alerts = [];
 var my_notids_messages = [];
+var volume, sound = undefined;
 
 notificationManager.createNotification = function(title, message)
 {
@@ -10,7 +11,12 @@ notificationManager.createNotification = function(title, message)
         title: title,
         message: message
     }, function(notificationid) {
-        my_notids_alerts.push(notificationid);
+        if (title.startsWith("New A")) {
+            my_notids_alerts.push(notificationid);
+        } else {
+            my_notids_messages.push(notificationid);
+        }
+        notificationManager.playSound(sound);
     });
 }
 
@@ -29,3 +35,11 @@ notificationManager.updateBadge = function()
         text: (total == 0) ? "" : total.toString()
     });
 }
+
+notificationManager.playSound = function(name)
+{
+    audobj = new Audio("sounds/" + name);
+    audobj.volume = volume / 100;
+    audobj.play();
+}
+
