@@ -2,7 +2,7 @@
     "manifest_version":2,
     "name":"Spigot Notifier",
     "description":"Get SpigotMc.org notifications in chrome.",
-    "version":"1.8.1",
+    "version":"1.8.2",
     "icons":{
         "32":"icon32.png",
         "48":"icon48.png",

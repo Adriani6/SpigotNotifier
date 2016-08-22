@@ -2,8 +2,9 @@ var SpigotNotifier = {};
 
 SpigotNotifier.init = function()
 {
+    SpigotNotifier.resetCounters();
     SpigotNotifier.checkData();
-    notificationManager.updateBadge(); 
+    notificationManager.updateBadge();
 
     setInterval(function(){ 
         SpigotNotifier.checkData(); 
