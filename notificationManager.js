@@ -20,20 +20,26 @@ notificationManager.createNotification = function(title, message)
     });
 }
 
-notificationManager.updateBadge = function()
+notificationManager.updateBadge = function(total)
 {
-    var total = 0;
-    chrome.storage.local.get('SNMsgCount', function(response) {
-        total += response.SNMsgCount;
-    });
+    var storageTotal = 0;
 
     chrome.storage.local.get('SNAlertCount', function(response) {
-        total += response.SNAlertCount;
+        storageTotal += response.SNAlertCount;
     });
+
+    if(total != undefined){
+        if(total > storageTotal){
+            chrome.browserAction.setBadgeText({
+                text: (total == 0) ? "" : total.toString()
+            });
+        }else{
+            chrome.browserAction.setBadgeText({
+                text: (storageTotal == 0) ? "" : storageTotal.toString()
+            });
+        }  
+    } 
     
-    chrome.browserAction.setBadgeText({
-        text: (total == 0) ? "" : total.toString()
-    });
 }
 
 notificationManager.playSound = function(name)

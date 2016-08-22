@@ -4,14 +4,13 @@ $(document).ready(function()
     
 
 chrome.webNavigation.onCompleted.addListener(function(details) {
-        var alertc = parseInt(SpigotNotifier.getAlertCount());
         var msgc = parseInt(SpigotNotifier.getMessagesCount());
-
+        var alerts = parseInt(localStorage.getItem("TemporaryAlertsCounter"));
 
         chrome.tabs.executeScript(details.tabId, {
-            code:   'if('+alertc+' > 0){'+
+            code:   'if('+alerts+' > 0){'+
                     '$("#AlertsMenu_Counter").removeClass("Zero");'+
-                    '$("#AlertsMenu_Counter span.Total").text('+alertc+');}'+
+                    '$("#AlertsMenu_Counter span.Total").text('+alerts+');}'+
                     'if('+msgc+' > 0){'+
                     '$("#ConversationsMenu_Counter").removeClass("Zero");'+
                     '$("#ConversationsMenu_Counter span.Total").text('+msgc+');}'

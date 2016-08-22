@@ -60,6 +60,8 @@ SpigotNotifier.checkData = function()
 
         SpigotNotifier.updateProfileStats(data);
 
+        var alertCounter = 0;
+
         if(alerts > 0)
         {
             var alertpromise = SpigotNotifier.getAlertsData();
@@ -68,15 +70,20 @@ SpigotNotifier.checkData = function()
                 var lastAlertID = SpigotNotifier.getLastAlertID();
                 var topID = 0;
 		        $(newData).find('.primaryContent').each(function(){
-                    if($(this).find(".newItem").length > 0){
+                    if($(this).find(".timeRow .newIcon").length > 0){
                         var subject = $(this).find("h3").text();
-
+                        alertCounter++;
                         notificationManager.createNotification("New Alert!", subject);
-                        SpigotNotifier.setAlertCount(1); 
-                        notificationManager.updateBadge();
                     }
 		        });
-                //SpigotNotifier.updateLastAlertID(topID);
+                
+                var tempAlertCount = localStorage.getItem("TemporaryAlertsCounter");
+
+                if(tempAlertCount < alertCounter)
+                    localStorage.setItem("TemporaryAlertsCounter", alertCounter);
+
+                SpigotNotifier.setAlertCount(alertCounter);
+                notificationManager.updateBadge(alertCounter);
             });
 
             alertpromise.error(function(){
@@ -96,19 +103,15 @@ SpigotNotifier.checkData = function()
 
 SpigotNotifier.setMessageCount = function(c)
 {
-    var count = parseInt(SpigotNotifier.getMessagesCount()) + c;
-
     chrome.storage.local.set({
-        'SNMsgCount': count
+        'SNMsgCount': c
     });
 }
 
 SpigotNotifier.setAlertCount = function(c)
 {
-    var count = parseInt(SpigotNotifier.getAlertCount()) + c;
-
     chrome.storage.local.set({
-        'SNAlertCount': count
+        'SNAlertCount': c
     });
 }
 
@@ -122,7 +125,9 @@ SpigotNotifier.resetCounters = function()
         'SNMsgCount': 0
     });
 
-    notificationManager.updateBadge();
+    localStorage.setItem("TemporaryAlertsCounter", 0);
+
+    notificationManager.updateBadge(0);
 }
 
 SpigotNotifier.getAlertCount = function()
