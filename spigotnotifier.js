@@ -64,6 +64,14 @@ SpigotNotifier.checkData = function()
 
         if(alerts > 0)
         {
+            if(alerts > 1)
+            {
+                notificationManager.createNotification("New Alerts!", "You have " + alerts + " new alerts!"); 
+                notificationManager.updateBadge(alerts);
+                SpigotNotifier.setAlertCount(alerts);
+                return;
+            }
+            
             var alertpromise = SpigotNotifier.getAlertsData();
             alertpromise.success(function(alertData){
                 var newData = $(alertData).find(".alertsScroller").html();
