@@ -62,7 +62,7 @@ SpigotNotifier.checkData = function()
 
         var alertCounter = 0;
 
-        if(alerts > -1)
+        if(alerts > 0)
         {
             if(alerts > 1)
             {
@@ -75,20 +75,23 @@ SpigotNotifier.checkData = function()
             var alertpromise = SpigotNotifier.getAlertsData();
             alertpromise.success(function(alertData){
                 var newData = $(alertData).find(".alertsScroller").html();
-                var lastAlertID = SpigotNotifier.getLastAlertID();
-                var topID = 0;
-		        $(newData).find('.primaryContent').each(function(){
-                    
-                    if($(this).find(".timeRow .newIcon").length > 0){
+                SpigotNotifier.getLastAlertID(function(lastAlertID)
+                {
+                    var topID = 0;
+                    $(newData).find('.primaryContent').each(function(){
                         var newAlertID = parseInt($(this).attr('id').replace("alert", ""));
-                        if(parseInt(lastAlertID) < newAlertID){
-                            SpigotNotifier.updateLastAlertID(newAlertID);
-                            var subject = $(this).find("h3").text();
-                            alertCounter++;
-                            notificationManager.createNotification("New Alert!", subject);
+                        if($(this).find(".timeRow .newIcon").length > 0){                            
+                            if(parseInt(lastAlertID) < newAlertID){
+                                
+                                SpigotNotifier.updateLastAlertID(newAlertID);
+                                var subject = $(this).find("h3").text();
+                                alertCounter++;
+                                notificationManager.createNotification("New Alert!", subject);
+                            }
                         }
-                    }
-		        });
+                    });
+                });
+                
                 
                 var tempAlertCount = localStorage.getItem("TemporaryAlertsCounter");
 
@@ -164,12 +167,11 @@ SpigotNotifier.updateLastAlertID = function(id)
     });
 }
 
-SpigotNotifier.getLastAlertID = function()
+SpigotNotifier.getLastAlertID = function(cb)
 {
     chrome.storage.local.get('SNLastAlertID', function(response) { 
-        return response.SNLastAlertID;    
+        cb(response.SNLastAlertID);    
     });
-    return localStorage.getItem("SNLastAlertID");
 }
 
 SpigotNotifier.updateProfileStats = function(data)
