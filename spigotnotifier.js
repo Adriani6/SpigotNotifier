@@ -62,7 +62,7 @@ SpigotNotifier.checkData = function()
 
         var alertCounter = 0;
 
-        if(alerts > 0)
+        if(alerts > -1)
         {
             if(alerts > 1)
             {
@@ -78,10 +78,15 @@ SpigotNotifier.checkData = function()
                 var lastAlertID = SpigotNotifier.getLastAlertID();
                 var topID = 0;
 		        $(newData).find('.primaryContent').each(function(){
+                    
                     if($(this).find(".timeRow .newIcon").length > 0){
-                        var subject = $(this).find("h3").text();
-                        alertCounter++;
-                        notificationManager.createNotification("New Alert!", subject);
+                        var newAlertID = parseInt($(this).attr('id').replace("alert", ""));
+                        if(parseInt(lastAlertID) < newAlertID){
+                            SpigotNotifier.updateLastAlertID(newAlertID);
+                            var subject = $(this).find("h3").text();
+                            alertCounter++;
+                            notificationManager.createNotification("New Alert!", subject);
+                        }
                     }
 		        });
                 
@@ -141,7 +146,6 @@ SpigotNotifier.resetCounters = function()
 SpigotNotifier.getAlertCount = function()
 {
     chrome.storage.local.get('SNAlertCount', function(response) { 
-        console.log(response.SNAlertCount);
         return response.SNAlertCount;    
     }); 
 }
@@ -149,18 +153,22 @@ SpigotNotifier.getAlertCount = function()
 SpigotNotifier.getMessagesCount = function()
 {
     chrome.storage.local.get('SNMsgCount', function(response) { 
-        console.log(response.SNMsgCount);
         return response.SNMsgCount;    
     });
 }
 
 SpigotNotifier.updateLastAlertID = function(id)
 {
-    localStorage.setItem("SNLastAlertID", id);
+    chrome.storage.local.set({
+        'SNLastAlertID': id
+    });
 }
 
 SpigotNotifier.getLastAlertID = function()
 {
+    chrome.storage.local.get('SNLastAlertID', function(response) { 
+        return response.SNLastAlertID;    
+    });
     return localStorage.getItem("SNLastAlertID");
 }
 

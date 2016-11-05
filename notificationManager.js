@@ -25,7 +25,7 @@ notificationManager.updateBadge = function(total)
     var storageTotal = 0;
 
     chrome.storage.local.get('SNAlertCount', function(response) {
-        storageTotal += response.SNAlertCount;
+        storageTotal = response.SNAlertCount;
     });
 
     if(total != undefined){
