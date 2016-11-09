@@ -1,6 +1,37 @@
 var id = 'SpigotNotifier';
+function getMode(callback)
+{
+    chrome.storage.local.get('mode', function(response) {
+        callback(response.mode);
+    });
+}
 
 $(document).ready(function() {
+    getMode(function(mode)
+    {
+        $("#mode").text(mode.charAt(0).toUpperCase() + mode.slice(1));
+    })
+    $("#toggleMode").click(function()
+    {        
+        getMode(function(mode)
+        {
+            if(mode == "simple")
+            {
+                chrome.storage.local.set({
+                    'mode': "rich"
+                });
+                $("#mode").text("Rich");
+            }
+            else
+            {
+                chrome.storage.local.set({
+                    'mode': "simple"
+                });
+                $("#mode").text("Simple");
+            }
+        })
+    })
+
     chrome.storage.local.get('SNAlertCount', function(response) {
         if (response.SNAlertCount > 0) {
             $("#alerts").css("color", "#D6847B");

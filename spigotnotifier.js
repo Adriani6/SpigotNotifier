@@ -1,31 +1,45 @@
 var SpigotNotifier = {};
+var mode = undefined;
+
 
 SpigotNotifier.init = function()
 {
-    SpigotNotifier.resetCounters();
-    SpigotNotifier.checkData();
-    notificationManager.updateBadge();
-
-    setInterval(function(){ 
-        SpigotNotifier.checkData(); 
-    }, 120000);
-    
-    chrome.storage.sync.get("volume", function(response) {
-        if (response.hasOwnProperty("volume")) {
-            volume = response.volume;
-        } else {
-            volume = 50;
+    SpigotNotifier.getMode(function(resp)
+    {
+        if(!resp)
+        {
+            SpigotNotifier.setMode("simple");
+            mode = "simple";
         }
-    });
-
-    chrome.storage.sync.get("sound", function(response) {
-        if (response.hasOwnProperty("sound")) {
-            sound = response.sound;
-        } else {
-            sound = "Pluck 6.mp3"
+        else
+        {
+            mode = resp;
         }
-    }); 
 
+        SpigotNotifier.resetCounters();
+        SpigotNotifier.checkData();
+        notificationManager.updateBadge();
+
+        setInterval(function(){ 
+            SpigotNotifier.checkData(); 
+        }, 120000);
+        
+        chrome.storage.sync.get("volume", function(response) {
+            if (response.hasOwnProperty("volume")) {
+                volume = response.volume;
+            } else {
+                volume = 50;
+            }
+        });
+
+        chrome.storage.sync.get("sound", function(response) {
+            if (response.hasOwnProperty("sound")) {
+                sound = response.sound;
+            } else {
+                sound = "Pluck 6.mp3"
+            }
+        }); 
+    })
 }
 
 SpigotNotifier.getForumData = function()
@@ -64,43 +78,46 @@ SpigotNotifier.checkData = function()
 
         if(alerts > 0)
         {
-            if(alerts > 1)
+            if(alerts > 0 && mode == "rich" || mode == "simple")
             {
                 notificationManager.createNotification("New Alerts!", "You have " + alerts + " new alerts!"); 
                 notificationManager.updateBadge(alerts);
                 SpigotNotifier.setAlertCount(alerts);
                 return;
             }
-            
-            var alertpromise = SpigotNotifier.getAlertsData();
-            alertpromise.success(function(alertData){
-                var newData = $(alertData).find(".alertsScroller").html();
-                SpigotNotifier.getLastAlertID(function(lastAlertID)
-                {
-                    var topID = 0;
-                    $(newData).find('.primaryContent').each(function(){
-                        var newAlertID = parseInt($(this).attr('id').replace("alert", ""));
-                        if($(this).find(".timeRow .newIcon").length > 0){                            
-                            if(parseInt(lastAlertID) < newAlertID){
-                                
-                                SpigotNotifier.updateLastAlertID(newAlertID);
-                                var subject = $(this).find("h3").text();
-                                alertCounter++;
-                                notificationManager.createNotification("New Alert!", subject);
+            else
+            {
+                var alertpromise = SpigotNotifier.getAlertsData();
+                alertpromise.success(function(alertData){
+                    var newData = $(alertData).find(".alertsScroller").html();
+                    SpigotNotifier.getLastAlertID(function(lastAlertID)
+                    {
+                        var topID = 0;
+                        $(newData).find('.primaryContent').each(function(){
+                            var newAlertID = parseInt($(this).attr('id').replace("alert", ""));
+                            if($(this).find(".timeRow .newIcon").length > 0){                            
+                                if(parseInt(lastAlertID) < newAlertID){
+                                    
+                                    SpigotNotifier.updateLastAlertID(newAlertID);
+                                    var subject = $(this).find("h3").text();
+                                    alertCounter++;
+                                    notificationManager.createNotification("New Alert!", subject);
+                                }
                             }
-                        }
+                        });
                     });
+                
+                
+                
+                    var tempAlertCount = localStorage.getItem("TemporaryAlertsCounter");
+
+                    if(tempAlertCount < alertCounter)
+                        localStorage.setItem("TemporaryAlertsCounter", alertCounter);
+
+                    SpigotNotifier.setAlertCount(alertCounter);
+                    notificationManager.updateBadge(alertCounter);
                 });
-                
-                
-                var tempAlertCount = localStorage.getItem("TemporaryAlertsCounter");
-
-                if(tempAlertCount < alertCounter)
-                    localStorage.setItem("TemporaryAlertsCounter", alertCounter);
-
-                SpigotNotifier.setAlertCount(alertCounter);
-                notificationManager.updateBadge(alertCounter);
-            });
+            }
 
             alertpromise.error(function(){
                 console.log("Couldn't get data");
@@ -116,6 +133,21 @@ SpigotNotifier.checkData = function()
         }
     })
 }
+
+SpigotNotifier.setMode = function(mode)
+{
+    chrome.storage.local.set({
+        'mode': mode
+    });
+}
+
+SpigotNotifier.getMode = function(callback)
+{
+    chrome.storage.local.get('mode', function(response) {
+        callback(response.mode);
+    });
+}
+
 
 SpigotNotifier.setMessageCount = function(c)
 {
