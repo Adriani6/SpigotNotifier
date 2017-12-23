@@ -21,7 +21,10 @@ var Manager = (function(v2Storage){
     _.Start = function(Popup){
 
         if(!Popup){
-            v2Storage.Temp.Clear();
+            //v2Storage.Temp.Clear();
+            v2Storage.Temp.Alerts.Set(0);
+            v2Storage.Temp.Messages.Set(0);
+              
         }
 
         _.LoadSettings();
@@ -53,6 +56,10 @@ var Manager = (function(v2Storage){
         }, d*6000);
     }
 
+    _.GetBaseURL = function(){
+        return priv.XHRSite;
+    }
+
     _.CreateNotification = function(type, title, body){
         chrome.notifications.create({
             type: "basic",
@@ -67,7 +74,7 @@ var Manager = (function(v2Storage){
                 priv.MessagesIds.push(notificationid);
             }
 
-            priv.PlaySound();
+            _.PlaySound();
         });
     }
 
@@ -78,9 +85,11 @@ var Manager = (function(v2Storage){
     }
 
     //  Private function to play a sound
-    priv.PlaySound = function(){
-        var audobj = new Audio("Content/sounds/" + priv.Sound);
-        audobj.volume = priv.Volume / 100;
+    _.PlaySound = function(sound){
+        console.log(sound)
+        var soundFile = sound == undefined ? priv.Sound : sound.file;
+        var audobj = new Audio("Content/sounds/" + soundFile);
+        audobj.volume = sound == undefined ? priv.Volume / 100 : sound.volume;
         audobj.play();
     }
 
@@ -135,15 +144,18 @@ var Manager = (function(v2Storage){
             })
             
             priv.UpdateBadge();
-            
-            if(alertTrigger){
-                _.CreateNotification(NOTIFICATIONTYPE.ALERT, "New Alert", `You have ${priv.TempAlerts} new alerts.`);
-                v2Storage.Temp.Alerts.Set(priv.TempAlerts);
-            }
 
-            if(messageTrigger){
-                _.CreateNotification(NOTIFICATIONTYPE.MESSAGE, "New Message", `You have ${priv.TempMessages} new messages.`); 
-                v2Storage.Temp.Messages.Set(priv.TempMessages);
+            if(!v2Storage.Timers.Disable.IsDisabled()){
+            
+                if(alertTrigger){
+                    _.CreateNotification(NOTIFICATIONTYPE.ALERT, "New Alert", `You have ${priv.TempAlerts} new alerts.`);
+                    v2Storage.Temp.Alerts.Set(priv.TempAlerts);
+                }
+
+                if(messageTrigger){
+                    _.CreateNotification(NOTIFICATIONTYPE.MESSAGE, "New Message", `You have ${priv.TempMessages} new messages.`); 
+                    v2Storage.Temp.Messages.Set(priv.TempMessages);
+                }
             }
 
             //console.log(alerts, messages);

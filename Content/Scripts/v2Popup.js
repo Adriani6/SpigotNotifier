@@ -56,9 +56,19 @@ $(document).ready(function(){
 
     //  Listen to options click event
     $('#options').click('click', function() {
-        location.pathname = "/options/options.html";
+        location.pathname = "/options.html";
         return false;
     });
+
+    $("[data-href], [data-base-href]").click(function(){
+        if($(this).data("href") != undefined){
+            chrome.tabs.create({ url: Manager.GetBaseURL() + $(this).data("href") });
+        }
+
+        if($(this).data("base-href") != undefined){
+            chrome.tabs.create({ url: $(this).data("base-href") });
+        }
+    })
 });
 
 // 23/12/2017

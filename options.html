@@ -4,11 +4,14 @@
 <head>
     <title>Spigot Notifier</title>
     <script src="Content/Scripts/jquery.js" type="text/javascript"></script>
-    <script src="Content/Scripts/v2Popup.js" type="text/javascript"></script>
+    <script src="Content/Scripts/nouislider.min.js" type="text/javascript"></script>
+    <script src="Content/Scripts/clarity-dropdown.js" type="text/javascript"></script>        
     <script src="Content/Scripts/v2Storage.js" type="text/javascript"></script>
+    <script src="Content/Scripts/v2Options.js" type="text/javascript"></script>
     <script src="Content/Scripts/v2Manager.js" type="text/javascript"></script>
     <link href="Content/CSS/clarity-ui.min.css" rel="stylesheet" type="text/css">
     <link href="Content/CSS/clarity-ui-icons.css" rel="stylesheet" type="text/css">
+    <link href="Content/CSS/nouislider.min.css" rel="stylesheet" type="text/css">
 
     <style>
         #header{
@@ -60,6 +63,14 @@
             margin-right: 10px;
         }
 
+        #volumeSlider, #tempDisableSlider{
+             padding-left: 30px; padding-right: 30px;
+        }
+
+        th{
+            width: 180px !important;
+        }
+
     </style>
 </head>
 
@@ -68,57 +79,52 @@
         
         <div>
             <img src="Content/Images/spigot.png" />
-            <img id="options" src="Content/Images/sn_background_gear.png">
+            <h4>Options</h4>
         </div>
 
     </section>
 
     <ul id="demoTabs" class="nav" role="tablist">
         <li role="presentation" class="nav-item">
-            <button class="btn btn-link nav-link" data-href="/" aria-controls="panel1"
-                    aria-selected="true" type="button">Home</button>
+            <button class="btn btn-link nav-link" id="goBack" aria-controls="panel1"
+                    aria-selected="true" type="button">Go Back</button>
         </li>
         <li role="presentation" class="nav-item">
-            <button class="btn btn-link nav-link" data-href="/forums" aria-controls="panel2"
-                    aria-selected="false" type="button">Forums</button>
+            <button class="btn btn-link nav-link" data-base-href="https://goo.gl/dwphtj" aria-controls="panel1"
+                    aria-selected="true" type="button">Chrome Store</button>
         </li>
         <li role="presentation" class="nav-item">
-            <button class="btn btn-link nav-link" data-href="/resources" aria-controls="panel3"
-                    aria-selected="false" type="button">Resources</button>
+            <button class="btn btn-link nav-link" data-base-href="https://goo.gl/g50n9j" aria-controls="panel1"
+                    aria-selected="true" type="button">Spigot Thread</button>
         </li>
         <li role="presentation" class="nav-item">
-            <button class="btn btn-link nav-link" data-href="/wiki/index" aria-controls="panel3"
-                    aria-selected="false" type="button">Wiki</button>
+            <button class="btn btn-link nav-link" data-base-href="https://goo.gl/MgbZ2U" aria-controls="panel1"
+                    aria-selected="true" type="button">Github</button>
         </li>
-        <li role="presentation" class="nav-item">
-            <button class="btn btn-link nav-link" data-base-href="https://hub.spigotmc.org/" aria-controls="panel3"
-                    aria-selected="false" type="button">Hub</button>
-        </li>
-        <li role="presentation" class="nav-item" style="margin-right: 0px;">
-            <button class="btn btn-link nav-link" data-href="/pages/irc" aria-controls="panel3"
-                    aria-selected="false" type="button">Chat</button>
-        </li>
+
     </ul>
     <div class="background">
         <div class="content">
             <table class="table table-vertical" style="margin: 0; border-top: unset;">
                 <tbody>
-                    <tr data-href="/account/alerts">
-                        <th>Notifications</th>
-                        <td><span id="alerts"></span></td>
-                    </tr>
-                    <tr data-href="/conversations">
-                        <th>Messages</th>
-                        <td><span id="messages"></span></td>
+                    <tr>
+                        <th>Volume (<span id="volPercentage"></span>%)</th>
+                        <td id="volumeSlider"></td>
                     </tr>
                     <tr>
-                        <th>Post Count</th>
-                        <td id="posts">0</td>
+                        <th>Sound</th>
+                        <td>
+                            <div class="btn-group btn-primary">
+                                <button id="prevSound" class="btn btn-sm"><</button>
+                                <button id="soundName" class="btn btn-sm">FX 1</button>
+                                <button id="nextSound" class="btn btn-sm">></button>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
-                        <th>Ratings</th>
-                        <td id="ratings">0</td>
-                    </tr>                                        
+                        <th>Disable for another <span id="disableMinutes">0</span> minutes.</th>
+                        <td id="tempDisableSlider"></td>
+                    </tr>                                     
                 </tbody>
             </table>
         </div>
