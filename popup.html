@@ -3,47 +3,126 @@
 
 <head>
     <title>Spigot Notifier</title>
-    <script src="jquery.js" type="text/javascript"></script>
-    <script src="popup.js" type="text/javascript"></script>
-    <link href="aaargh.css" rel="stylesheet" type="text/css">
-    <link href="popup.css" rel="stylesheet" type="text/css">
+    <script src="Content/Scripts/jquery.js" type="text/javascript"></script>
+    <script src="Content/Scripts/v2Popup.js" type="text/javascript"></script>
+    <script src="Content/Scripts/v2Storage.js" type="text/javascript"></script>
+    <script src="Content/Scripts/v2Manager.js" type="text/javascript"></script>
+    <link href="Content/CSS/clarity-ui.min.css" rel="stylesheet" type="text/css">
+    <link href="Content/CSS/clarity-ui-icons.css" rel="stylesheet" type="text/css">
+
+    <style>
+        #header{
+            background-image: url(Content/Images/spigot_background.png);
+            background-repeat: repeat;
+            background-position: 0 0;
+            height: 80px;
+            width: 100%;
+        }
+
+        #header > div{
+            background-color: rgba(237, 129, 6, .8);
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        #header > div > img{
+            position: absolute;
+            height: 60px;
+            width: 90px;
+            top:0;
+            bottom:0;
+            margin:auto;
+            margin-left: 10px;
+        }
+
+        #header > div > #options{
+            right: 10px;
+            height: 40px;
+            width: 40px;
+        }
+
+        .nav .nav-item {
+            margin-right: 12px;
+        }
+
+        tr[data-href]{
+            cursor: pointer;
+        }
+
+        .nav-link:hover{
+            box-shadow: 0 -3px 0 rgb(237, 129, 6) inset !important;
+        }
+
+        #footer{
+            font-size: 8px;
+            float: right;
+            margin-right: 10px;
+        }
+
+    </style>
 </head>
 
 <body>
-    <div class="background">
-        <img src="sn_background.png" usemap="#site-link">
-        <map name="site-link">
-            <area shape="rect" coords="0,24,160,100" href="https://spigotmc.org/">
-        </map>
-        <div class="header">
-            <a href="https://spigotmc.org/">Home</a>
-            <span class="spliter">|</span>
-            <a href="https://spigotmc.org/forums/">Forums</a>
-            <span class="spliter">|</span>
-            <a href="https://spigotmc.org/resources/">Resources</a>
-            <span class="spliter">|</span>
-            <a href="https://spigotmc.org/wiki/index/">Wiki</a>
-            <span class="spliter">|</span>
-            <a href="https://hub.spigotmc.org/">Hub</a>
-            <span class="spliter">|</span>
-            <a href="https://spigotmc.org/pages/irc/">Chat</a>
+    <section id="header">
+        
+        <div>
+            <img src="Content/Images/spigot.png" />
+            <img id="options" src="Content/Images/sn_background_gear.png">
         </div>
-        <div id="toggleMode" style="cursor: pointer;">(Click To Toggle) Mode: <span id="mode"></span> </a>
-            <img id="options" src="sn_background_gear.png" title="Change Spigot Notifier's Options!">
+
+    </section>
+
+    <ul id="demoTabs" class="nav" role="tablist">
+        <li role="presentation" class="nav-item">
+            <button class="btn btn-link nav-link" aria-controls="panel1"
+                    aria-selected="true" type="button">Home</button>
+        </li>
+        <li role="presentation" class="nav-item">
+            <button class="btn btn-link nav-link" aria-controls="panel2"
+                    aria-selected="false" type="button">Forums</button>
+        </li>
+        <li role="presentation" class="nav-item">
+            <button class="btn btn-link nav-link" aria-controls="panel3"
+                    aria-selected="false" type="button">Resources</button>
+        </li>
+        <li role="presentation" class="nav-item">
+            <button class="btn btn-link nav-link" aria-controls="panel3"
+                    aria-selected="false" type="button">Wiki</button>
+        </li>
+        <li role="presentation" class="nav-item">
+            <button class="btn btn-link nav-link" aria-controls="panel3"
+                    aria-selected="false" type="button">Hub</button>
+        </li>
+        <li role="presentation" class="nav-item" style="margin-right: 0px;">
+            <button class="btn btn-link nav-link" aria-controls="panel3"
+                    aria-selected="false" type="button">Chat</button>
+        </li>
+    </ul>
+    <div class="background">
         <div class="content">
-            <span>Notifications | </span>
-            <a id="alerts" href="https://www.spigotmc.org/account/alerts" title="Click to see your alerts!">99 new</a>
-            <br>
-            <span>Messages | </span>
-            <a id="messages" href="https://www.spigotmc.org/conversations/" title="Click to see your messages!">99 new</a>
-            <br>
-            <span>Post Count | </span>
-            <span id="posts">99</span>
-            <br>
-            <span>Ratings | </span>
-            <span id="rating">99</span>
+            <table class="table table-vertical" style="margin: 0; border-top: unset;">
+                <tbody>
+                    <tr data-href="spigot-notifications">
+                        <th>Notifications</th>
+                        <td><span id="alerts"></span></td>
+                    </tr>
+                    <tr data-href="spigot-messages">
+                        <th>Messages</th>
+                        <td><span id="messages"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Post Count</th>
+                        <td id="posts">0</td>
+                    </tr>
+                    <tr>
+                        <th>Ratings</th>
+                        <td id="ratings">0</td>
+                    </tr>                                        
+                </tbody>
+            </table>
         </div>
     </div>
+    <section id="footer"> <a href="http://www.adriani6.co.uk"> &copy; 2015 - <span id="copyrightDate"></span> Adriani6 </a> | SN v. 2.0 </section>
 </body>
-
 </html>
