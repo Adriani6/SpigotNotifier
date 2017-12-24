@@ -7,15 +7,22 @@ var Options = (function(v2Storage){
 })(v2Storage);
 
 $(document).ready(function(){
+
+    Manager.LoadSettings();
+
     $("#goBack").click(function(){
         location.pathname = "/popup.html";
         return false;
     });
 
+    Options.Sound.Get(function(sound){
+        $("#soundName").html(sound.name);
+    });
+
     Options.Volume.Get(function(vol){
-        $("#volPercentage").text(vol);
+        $("#volPercentage").text(vol * 100);
         noUiSlider.create($("#volumeSlider").get(0), {
-            start: [ vol ],
+            start: [ vol * 100 ],
             range: {
                 'min': [ 0 ],
                 'max': [ 100 ]
@@ -25,7 +32,7 @@ $(document).ready(function(){
         $("#volumeSlider").get(0).noUiSlider.on('change', function ( values, handle ) {
 
             $("#volPercentage").text(Math.floor(values[handle]));
-            Options.Timers.Disable(Math.floor(values[handle]));
+            Options.Volume.Set(Math.floor(values[handle]));
 
         });
     })
@@ -68,6 +75,12 @@ $(document).ready(function(){
             Options.GetSoundByIndex(soundIndex, function(index, sound){
                 soundIndex = index;
                 $("#soundName").html(sound.name);
+
+                Options.Volume.Get(function(vol){
+                    sound.volume = vol;
+                    Manager.PlaySound(sound);
+                    Manager.LoadSettings();
+                })
             });
         }
     });
@@ -78,8 +91,17 @@ $(document).ready(function(){
         Options.GetSoundByIndex(soundIndex, function(index, sound){
             soundIndex = index;
             $("#soundName").html(sound.name);
-            sound.volume = 0.5;
-            Manager.PlaySound(sound);
+            
+            Options.Volume.Get(function(vol){
+                sound.volume = vol;
+                Manager.PlaySound(sound);
+                Manager.LoadSettings();
+            })
+            
         });
+    })
+
+    $("#soundName").click(function(){
+        Manager.PlaySound();
     })
 })

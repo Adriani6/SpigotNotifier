@@ -21,16 +21,19 @@ var Manager = (function(v2Storage){
     _.Start = function(Popup){
 
         if(!Popup){
-            //v2Storage.Temp.Clear();
-            v2Storage.Temp.Alerts.Set(0);
-            v2Storage.Temp.Messages.Set(0);
-              
+            v2Storage.Temp.Clear();
+            //v2Storage.Temp.Alerts.Set(0);
+            //v2Storage.Temp.Messages.Set(0);            
         }
 
         _.LoadSettings();
         priv.CheckSite();
 
         Timer = setInterval(function(){
+
+            if(!Popup)
+                _.LoadSettings();
+                
             priv.CheckSite();
         }, priv.Timeout);
     }
@@ -38,7 +41,7 @@ var Manager = (function(v2Storage){
     _.LoadSettings = function(){
 
         v2Storage.Volume.Get(function(vol){
-            priv.Volume = vol;
+            priv.Volume = vol * 100;
         });
 
         v2Storage.Sound.Get(function(sound){
@@ -86,9 +89,9 @@ var Manager = (function(v2Storage){
 
     //  Private function to play a sound
     _.PlaySound = function(sound){
-        console.log(sound)
-        var soundFile = sound == undefined ? priv.Sound : sound.file;
-        var audobj = new Audio("Content/sounds/" + soundFile);
+
+        var soundFile = sound == undefined ? priv.Sound.file : sound.file;
+        var audobj = new Audio(decodeURIComponent("Content/sounds/" + soundFile));
         audobj.volume = sound == undefined ? priv.Volume / 100 : sound.volume;
         audobj.play();
     }

@@ -22,11 +22,19 @@
             width: 100%;
         }
 
-        #header > div{
+        #header > div {
             background-color: rgba(237, 129, 6, .8);
             height: 100%;
             width: 100%;
             position: relative;
+        }
+
+        #header > div > h4 {
+            position: absolute;
+            /* float: right; */
+            right: 20px;
+            top: 5px;
+            font-weight: 900;
         }
 
         #header > div > img{
@@ -115,9 +123,9 @@
                         <th>Sound</th>
                         <td>
                             <div class="btn-group btn-primary">
-                                <button id="prevSound" class="btn btn-sm"><</button>
-                                <button id="soundName" class="btn btn-sm">FX 1</button>
-                                <button id="nextSound" class="btn btn-sm">></button>
+                                <button id="prevSound" class="btn btn-sm" style="max-width: 30px; min-width: 30px;"><</button>
+                                <button id="soundName" class="btn btn-sm" style="max-width: 100px; width: 100px;"></button>
+                                <button id="nextSound" class="btn btn-sm" style="max-width: 30px; min-width: 30px;">></button>
                             </div>
                         </td>
                     </tr>

@@ -46,8 +46,12 @@ var v2Storage = (function(){
     var storage = {
         GetSoundByIndex: function(index, callback){
             if(index > (sounds.length - 1)){
-                index = index - (sounds.length - 1);
+                index = 0;
             }
+
+            chrome.storage.sync.set({
+                "sound": JSON.stringify(sounds[index])
+            });
 
             callback(index, sounds[index]);
         },
@@ -67,14 +71,20 @@ var v2Storage = (function(){
             Get: function(callback){
                 chrome.storage.sync.get("volume", function(response) {
                     var volume = 50;
+                    console.log(response)
 
                     if (response.hasOwnProperty("volume")) {
                         volume = response.volume;
                     }
 
-                    callback(volume);
+                    callback(volume / 100);
                 });
 
+            },
+            Set: function(vol){
+                chrome.storage.sync.set({
+                    'volume': vol
+                });
             }
         },
 
@@ -99,7 +109,9 @@ var v2Storage = (function(){
         Temp: {
             Alerts: {
                 Get: function(){
-                    return localStorage.getItem("SNTempAlerts");
+                    var tempAlerts = localStorage.getItem("SNTempAlerts");
+
+                    return tempAlerts != undefined ? tempAlerts : 0;
                 },
                 Set: function(i){
                     localStorage.setItem("SNTempAlerts", i);
@@ -107,7 +119,8 @@ var v2Storage = (function(){
             },
             Messages: {
                 Get: function(){
-                    return localStorage.getItem("SNTempMessages");
+                    var tempMessages = localStorage.getItem("SNTempMessages")
+                    return tempMessages != undefined ? tempMessages : 0;
                 },
                 Set: function(i){
                     localStorage.setItem("SNTempMessages", i);
