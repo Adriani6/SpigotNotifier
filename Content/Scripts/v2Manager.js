@@ -5,7 +5,7 @@ var Manager = (function(v2Storage){
     var Timer = undefined;
     var _ = {};
     var priv = {
-        XHRSite: "https://www.spigotmc.org",
+        XHRSite: "https://spigotmc.org",
         Timeout: 20000, // 1 Minute = 60000
         AlertsIds: [],
         MessagesIds: [],
@@ -82,6 +82,7 @@ var Manager = (function(v2Storage){
     }
 
     priv.UpdateBadge = function(){
+        console.log(priv.TempAlerts, priv.TempMessages)
         chrome.browserAction.setBadgeText({
             text: ((priv.TempAlerts + priv.TempMessages) == 0) ? "" : (priv.TempAlerts + priv.TempMessages).toString()
         });
@@ -104,14 +105,50 @@ var Manager = (function(v2Storage){
 
     }
 
+    priv.ParseJson = function(s){
+        var array1 = s.split(',');
+
+        for(var i = 0; i < array1.length; i++){
+            array1[i] = array1[i].replace(/(\r\n|\n|\r)/gm," ").trim().replace(" 				", "").replace(" 			", "").replace("{", "").replace("}", "").replace("'", '').replace("'", '');
+        
+        array2 = array1[i].split(":");
+        var array3 = [];
+        
+        for(var j = 0; j < array2.length; j+=2){
+            array3.push('"' + array2[j] + '":' +  '"' + array2[j + 1] + '"');
+        }
+        
+        array1[i] = array3.toString();
+        }
+
+        return JSON.parse('{' + array1 + '}');
+    }
+
     priv.CheckSite = function(){
     
         priv.MakeRequest()
         .done(function(data){
             data = data.replace(/<img[^>]*>/g,"");  //  Remove any images to avoid loading attempts that cause failed image requests
 
+            var isv2 = false;
+
             var alerts = parseInt($(data).find("#AlertsMenu_Counter").text());
             var messages = parseInt($(data).find("#ConversationsMenu_Counter").text());
+
+            if(isNaN(alerts) && isNaN(messages)){
+                isv2 = true;
+            }
+
+            if(isv2){
+                
+                var json = data.substr(data.indexOf("visitorCounts: {") + 15);
+                json = json.substr(0, json.indexOf("},") + 1);
+                json = priv.ParseJson(json);
+
+                alerts = parseInt(json.alerts_unread);
+                messages = parseInt(json.conversations_unread);
+
+            }
 
             var messageTrigger = false, alertTrigger = false;
 
@@ -138,12 +175,12 @@ var Manager = (function(v2Storage){
 
             $("#ratings").trigger({
                 type: "SN:RatingsUpdate",
-                count: $(data).find("#content").find(".dark_postrating_positive").text()
+                count: isv2 ? 'Unavailable' : $(data).find("#content").find(".dark_postrating_positive").text()
             })
 
             $("#posts").trigger({
                 type: "SN:PostCountUpdate",
-                count: $(data).find("#content").find(".stats").text().split(":")[1].replace("\nRatings","").replace("\n","")
+                count: isv2 ? 'Unavailable' : $(data).find("#content").find(".stats").text().split(":")[1].replace("\nRatings","").replace("\n","")
             })
             
             priv.UpdateBadge();
